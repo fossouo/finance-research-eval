@@ -30,7 +30,7 @@ are deliberately, fully open.
 | `RecommendationRecord` (schema) | **the full standard** | — |
 | `Gate` (G-1..G-6) | **the full gate engine** | — |
 | `Compute` (deterministic recompute) | reference engine + public formulas | proprietary metrics / scoring |
-| `Connector` (data source) | `MockConnector`, `SyntheticFilingConnector` | `EdgarConnector`, `EodhdConnector`, real ingestion, point-in-time premium |
+| `Connector` (data source) | `Connector`/`ConstituentsSource` Protocols + `MockConnector` (E1) | `EdgarConnector`, `TiingoConnector`, real ingestion, dated S&P 500 membership, point-in-time premium |
 | `Scorer` | naive reference scorer | proprietary MARBO scoring |
 | `ComplianceWorkflow` | the **interface** + the dual-use/MiFID contract | the real operational workflow |
 | Fixtures | **synthetic** filings/QA we own | real data, client cases |
@@ -73,5 +73,8 @@ keep it private (you can always open more later; you can never un-publish git hi
 
 ## Status
 
-Design-only (Phase 0). No executable code yet. This document is the binding
-boundary for everything that follows.
+Executable framework (P1–P3) + the `Connector` seam (E1) shipped: schema, gates
+G-1..G-6, deterministic compute, public source pointers/loaders, mock candidates,
+and `harness/connectors/` (Protocols + `MockConnector` + as-first-reported /
+point-in-time utilities). Real connectors remain private. This document is the
+binding boundary for everything that follows.
