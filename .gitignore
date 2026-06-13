@@ -50,6 +50,12 @@ scoring/proprietary/
 compliance/operational/
 marbo/
 
+# --- Research / strategy notes (kept out of the public framework) -----------
+# Data-sourcing study (provider comparison, strategy) is research, not the
+# standard. A stray copy must never reach the public tree.
+sp500-data-sourcing/
+**/sp500-data-sourcing/
+
 # --- Point-in-time / provider artifacts (paid sources, never public) --------
 provider_*/
 eodhd_*/
