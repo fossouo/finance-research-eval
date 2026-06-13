@@ -1,0 +1,40 @@
+finance-research-eval
+Copyright 2026 MARBO FINANCE
+
+This product includes software developed by MARBO FINANCE and contributors.
+
+Licensed under the Apache License, Version 2.0 (the "License").
+You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+
+------------------------------------------------------------------------------
+Scope of this open-source release (open-core)
+------------------------------------------------------------------------------
+
+This public repository contains the *recevability framework* for LLM-assisted
+financial analysis: the Recommendation Record schema, the evaluation gates
+(G-1..G-6), deterministic reference computation, synthetic fixtures, and mock
+connectors. See OPEN-CORE.md for the precise public/enterprise boundary.
+
+It does NOT contain, and never will:
+  - real market or fundamentals data,
+  - production data connectors (EDGAR, EODHD, FMP, Tiingo, Sharadar, ...),
+  - proprietary scoring, MARBO FINANCE integrations, or operational
+    compliance workflows.
+
+------------------------------------------------------------------------------
+Documentation license
+------------------------------------------------------------------------------
+
+Specifications and documentation (the Recommendation Record, the evaluation
+gates, the dual-use contract, and all Markdown under .specify/ and docs/) are
+licensed under Creative Commons Attribution 4.0 International (CC-BY-4.0).
+See LICENSE-docs.
+
+------------------------------------------------------------------------------
+Disclaimer
+------------------------------------------------------------------------------
+
+This software is NOT investment advice and NOT legal advice. The MiFID II /
+AMF provisions described in the dual-use contract are an engineering proposal
+and must be validated by qualified compliance/legal counsel before any real-
+world use. See SECURITY.md and the dual-use-contract for details.

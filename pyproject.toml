@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "finance-research-eval"
+version = "0.1.0-p1"
+description = "A recevability framework for LLM-assisted financial analysis: Recommendation Record, deterministic gates (G-1..G-6), dual-use contract."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "Apache-2.0" }
+authors = [{ name = "MARBO FINANCE" }]
+keywords = ["finance", "evaluation", "llm", "recevability", "audit", "mifid"]
+
+# P1 dry harness: ZERO runtime dependencies (pure standard library).
+# Tests run with stdlib unittest — no install, no network required:
+#   python3 -m unittest discover -s tests -t .
+#   python3 -m harness.runner
+dependencies = []
+
+[project.optional-dependencies]
+# Wired at the Opening/CI phase, NOT in the local dry harness:
+ci = ["jsonschema>=4", "pytest>=8"]
+
+[tool.setuptools]
+packages = ["harness", "harness.compute", "harness.gates", "harness.fixtures", "harness.sources", "harness.candidates"]

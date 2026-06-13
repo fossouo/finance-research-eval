@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  tests:
+    name: Tests (stdlib, no deps)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run test suite
+        run: python -m unittest discover -s tests -t .
+      - name: Smoke the offline runners
+        run: |
+          python -m harness.runner
+          python -m harness.sources.demo
+          python -m harness.eval_run
+
+  public-hygiene:
+    name: Public hygiene (no internal traces / secrets / real data)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Hygiene gate
+        run: bash tools/check_public_hygiene.sh

@@ -1,0 +1,26 @@
+{
+  "_synthetic": true,
+  "cik": "0000000000",
+  "entityName": "ACME SA (synthetic)",
+  "facts": {
+    "us-gaap": {
+      "Revenues": {
+        "label": "Revenues",
+        "units": {
+          "USD": [
+            {"end": "2023-12-31", "val": 1000000000, "form": "10-K", "fy": 2023, "fp": "FY", "filed": "2024-02-15"},
+            {"end": "2024-12-31", "val": 1200000000, "form": "10-K", "fy": 2024, "fp": "FY", "filed": "2025-02-15"}
+          ]
+        }
+      },
+      "GrossProfit": {
+        "label": "Gross Profit",
+        "units": {
+          "USD": [
+            {"end": "2024-12-31", "val": 480000000, "form": "10-K", "fy": 2024, "fp": "FY", "filed": "2025-02-15"}
+          ]
+        }
+      }
+    }
+  }
+}

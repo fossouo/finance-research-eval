@@ -1,0 +1,89 @@
+# =============================================================================
+# finance-research-eval — ANTI-LEAK .gitignore (deny-by-default for anything
+# that could expose the private/enterprise stack or real data).
+#
+# Rule of thumb: this PUBLIC repo ships ONLY the framework, schemas, gates,
+# synthetic fixtures, mock connectors, and docs. If a path below could ever
+# hold real data, secrets, or a real connector, it is excluded here.
+# When in doubt, exclude. See OPEN-CORE.md for the boundary.
+# =============================================================================
+
+# --- Secrets & credentials (NEVER commit) -----------------------------------
+*.env
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+secrets/
+**/secrets/
+credentials*
+*.credentials
+.aws/
+.netrc
+
+# --- Real data (NEVER commit; only synthetic fixtures are versioned) --------
+corpora/
+data/
+datasets/
+runs/
+out/
+cache/
+*.parquet
+*.feather
+# Benchmarks are downloaded by the user, never redistributed:
+**/financebench/raw/
+**/finqa/raw/
+**/convfinqa/raw/
+**/tatqa/raw/
+
+# --- Enterprise / private boundary ------------------------------------------
+# The enterprise edition lives in a SEPARATE private repo. If anyone ever
+# clones it alongside this one, these paths must never be tracked here.
+enterprise/
+private/
+connectors/real/
+**/connectors/real/
+scoring/proprietary/
+**/proprietary/
+compliance/operational/
+marbo/
+
+# --- Point-in-time / provider artifacts (paid sources, never public) --------
+provider_*/
+eodhd_*/
+fmp_*/
+tiingo_*/
+sharadar_*/
+point_in_time/
+
+# --- Python -----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Node (if any tooling is added later) -----------------------------------
+node_modules/
+npm-debug.log*
+
+# --- OS / editor ------------------------------------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+*.log
+
+# --- Build / dist -----------------------------------------------------------
+build/
+dist/
+*.tar.gz

@@ -1,0 +1,20 @@
+[
+  {
+    "_synthetic": true,
+    "id": "synthetic-finqa-0001",
+    "question": "What is ACME SA's EV/EBITDA multiple for FY2024?",
+    "gold": "8.0",
+    "pre_text": ["Enterprise value and EBITDA are reported below for FY2024 (synthetic)."],
+    "post_text": ["EV/EBITDA is computed as enterprise value divided by EBITDA."],
+    "table": [["metric", "FY2024"], ["Enterprise value (MEUR)", "2400"], ["EBITDA (MEUR)", "300"]]
+  },
+  {
+    "_synthetic": true,
+    "id": "synthetic-finqa-0002",
+    "question": "What is the net debt to EBITDA ratio for FY2024?",
+    "gold": "2.0",
+    "pre_text": ["Net debt and EBITDA for FY2024 (synthetic)."],
+    "post_text": [],
+    "table": [["metric", "FY2024"], ["Net debt (MEUR)", "600"], ["EBITDA (MEUR)", "300"]]
+  }
+]

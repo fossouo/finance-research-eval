@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://finance-research-eval/recommendation_record.schema.json",
+  "title": "Recommendation Record",
+  "description": "The unit of output of the framework. A structured analysis whose every quantitative claim is sourced and whose every computation is independently recomputable. Fields marked 'harness-filled' are added during evaluation and are NOT provided by the candidate.",
+  "type": "object",
+  "required": ["id", "lane", "subject", "information_cutoff", "claims"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string" },
+    "lane": { "type": "string", "enum": ["personal-research", "client-mifid"] },
+    "subject": { "type": "string", "description": "Issuer / instrument analysed (synthetic in the public repo)." },
+    "information_cutoff": { "type": "string", "format": "date", "description": "Information cutoff date (G-4). No evidence may be dated after this." },
+    "claims": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/claim" }
+    },
+    "lane_fields": {
+      "$ref": "#/$defs/lane_fields",
+      "description": "Required when lane == client-mifid (gate G-6)."
+    },
+    "audit_trail": { "$ref": "#/$defs/audit_trail" },
+    "gate_results": { "type": "object", "description": "harness-filled" },
+    "verdict": { "type": "string", "enum": ["ADMISSIBLE", "BLOCKED"], "description": "harness-filled" }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "required": ["id", "figure", "value", "source_doc", "locator", "as_of"],
+      "properties": {
+        "id": { "type": "string" },
+        "figure": { "type": "string" },
+        "value": { "type": "number" },
+        "unit": { "type": "string" },
+        "source_doc": { "type": "string", "description": "Origin document (e.g. 10-K, URD)." },
+        "locator": { "type": "string", "description": "Resolvable location (page/section/table/row)." },
+        "as_of": { "type": "string", "format": "date", "description": "Date of the information (G-4)." }
+      }
+    },
+    "computation": {
+      "type": "object",
+      "required": ["metric", "formula", "inputs", "llm_value"],
+      "properties": {
+        "metric": { "type": "string" },
+        "formula": { "type": "string" },
+        "inputs": {
+          "type": "object",
+          "description": "Map operand name -> evidence id.",
+          "additionalProperties": { "type": "string" }
+        },
+        "llm_value": { "type": "number", "description": "Value proposed by the model (compared against the independent recompute)." },
+        "recomputed_value": { "type": ["number", "null"], "description": "harness-filled (G-3)" },
+        "agree": { "type": "boolean", "description": "harness-filled (G-3)" }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "required": ["statement", "kind"],
+      "properties": {
+        "statement": { "type": "string" },
+        "kind": { "type": "string", "enum": ["qualitative", "quantitative", "valuation"] },
+        "evidence": { "type": "array", "items": { "$ref": "#/$defs/evidence" } },
+        "computations": { "type": "array", "items": { "$ref": "#/$defs/computation" } }
+      }
+    },
+    "lane_fields": {
+      "type": "object",
+      "required": ["reco_nature", "disclaimers", "conflicts_of_interest"],
+      "properties": {
+        "reco_nature": { "type": "string", "enum": ["personalised-advice", "general-research"] },
+        "disclaimers": { "type": "array", "items": { "type": "string" } },
+        "conflicts_of_interest": { "type": "string" },
+        "suitability": {
+          "type": "object",
+          "description": "Required when reco_nature == personalised-advice.",
+          "properties": {
+            "knowledge_experience": { "type": "string" },
+            "financial_situation": { "type": "string" },
+            "loss_capacity": { "type": "string" },
+            "objectives_horizon": { "type": "string" },
+            "risk_tolerance": { "type": "string" },
+            "suitability_declaration": { "type": "string" }
+          }
+        }
+      }
+    },
+    "audit_trail": {
+      "type": "object",
+      "required": ["input_hash", "transformations"],
+      "properties": {
+        "input_hash": { "type": "string" },
+        "transformations": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+# Documentation License — Creative Commons Attribution 4.0 International (CC-BY-4.0)
+
+The **specifications and documentation** of this project are licensed under the
+**Creative Commons Attribution 4.0 International License (CC-BY-4.0)**, separately
+from the source code (which is under Apache-2.0, see `LICENSE`).
+
+Full legal code: https://creativecommons.org/licenses/by/4.0/legalcode
+Human-readable summary: https://creativecommons.org/licenses/by/4.0/
+
+## What this covers
+
+This documentation license applies to (the *standard*, meant to be cited):
+
+- `.specify/memory/constitution.md`
+- `.specify/specs/**/*.md` — incl. `spec.md`, `harness-structure.md`,
+  `dual-use-contract.md`, `eval-gates.md`
+- `docs/**` (when added)
+- the **Recommendation Record** schema definition *as a specification*
+  (any executable schema/code implementing it remains under Apache-2.0)
+
+Source code, tests, fixtures, and mock connectors are **NOT** covered here —
+they are under `LICENSE` (Apache-2.0).
+
+## What you may do (summary, not a substitute for the legal code)
+
+- **Share** — copy and redistribute in any medium or format.
+- **Adapt** — remix, transform, and build upon the material, for any purpose,
+  even commercially.
+
+Under the single condition of **Attribution**:
+
+> You must give appropriate credit to **MARBO FINANCE — finance-research-eval**,
+> provide a link to the license, and indicate if changes were made. You may do
+> so in any reasonable manner, but not in any way that suggests the licensor
+> endorses you or your use.
+
+## Suggested citation
+
+> finance-research-eval — A recevability framework for LLM-assisted financial
+> analysis (Recommendation Record, evaluation gates G-1..G-6, dual-use contract).
+> MARBO FINANCE, 2026. Licensed under CC-BY-4.0.
+
+## Note
+
+Public benchmark datasets (FinanceBench, FinQA, ConvFinQA, TAT-QA, ...) are
+**not** distributed by this project and are **not** covered by this license;
+each retains its own license. This project provides loaders/pointers only.

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Local anti-leak gate. Enable once with:  git config core.hooksPath .githooks
+# Blocks a commit that would introduce internal traces, secrets, or real data.
+exec bash "$(git rev-parse --show-toplevel)/tools/check_public_hygiene.sh"
