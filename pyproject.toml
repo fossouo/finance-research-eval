@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "finance-research-eval"
-version = "0.1.0-e1"
+version = "0.2.0"  # E1: Connector seam (P1 dry harness was 0.1.0)
 description = "A recevability framework for LLM-assisted financial analysis: Recommendation Record, deterministic gates (G-1..G-6), dual-use contract."
 readme = "README.md"
 requires-python = ">=3.9"
