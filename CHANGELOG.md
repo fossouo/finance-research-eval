@@ -9,6 +9,11 @@ Recommendation Record schema or to any gate's pass/fail semantics is a **major**
 
 ## [Unreleased]
 
+### Added (Patrimoine / CGP worked case)
+- `harness/fixtures/cases_patrimoine.py`: MEDISYN SA, a synthetic mid-cap pharma. Two companion `client-mifid` general-research notes — one **ADMISSIBLE** (every computation recomputes exactly) and one **BLOCKED** (a fabricated EV/EBITDA of 6.5× vs a recomputed 9.0× → G-3 FAIL → G-5 propagates). Demonstrates the verifier refusing, not softening, a "cheap multiple" the evidence does not support.
+- `docs/usage-patrimoine-dossier-client.md`: step-by-step guide for using the harness on a fictitious client dossier (run both notes, read the verdict, adapt to your own synthetic case). 100 % offline/synthetic; production sources/models remain locked.
+- `tests/test_cases_patrimoine.py`: 19 tests — lane/reco_nature/no-suitability invariants, admissible all-PASS, rejected isolated to G-3/G-5, no real-ISIN leak.
+
 ### Added (Phase 3 — candidate/model branched, end-to-end)
 - `harness/candidates/`: model-agnostic candidate adapters. `base.assemble_rr` (EvalItem→RR), `mock.py` (FaithfulMock + SloppyMock, deterministic, 0 VRAM), `http_openai.py` (any OpenAI-compatible endpoint; the only networked module).
 - `harness/eval_run.py`: end-to-end `EvalItem → candidate → RR → gates → report`, scoring recevability AND accuracy separately (FR-011). `python3 -m harness.eval_run` (offline mock demo).

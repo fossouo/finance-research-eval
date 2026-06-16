@@ -94,6 +94,8 @@ finance-research-eval/
 │   ├── compute/metrics.py                      ←   moteur de recalcul déterministe (G-3)
 │   ├── gates/gates.py                          ←   G-1..G-6 + sévérité par lane + verdict
 │   ├── fixtures/{synthetic,cases}.py           ←   RR synthétiques + catalogue de conformité
+│   ├── fixtures/cases_worked.py                 ←   cas E2E complet : FICTEX SA (analyste)
+│   ├── fixtures/cases_patrimoine.py             ←   cas patrimoine/CGP : MEDISYN SA (note OK + note refusée)
 │   ├── runner.py                               ←   fixtures → gates → rapport local
 │   ├── sources/                                ← P2 : loaders publics (pointeurs, offline)
 │   │   ├── registry.py                         ←   pointeurs : URL, licence, no-redistribution
