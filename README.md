@@ -1,175 +1,166 @@
 # finance-research-eval
 
-> **Framework de recevabilité pour l'analyse financière assistée par LLM.** Cœur
-> public open-core ; la donnée réelle, les connecteurs et la stack opérationnelle
+> **Un harnais qui décide si une analyse financière produite par un LLM est _recevable_ —
+> sourcée, recalculable, datée — _avant_ de regarder si elle est « bonne ».**
+> Cœur open-core public ; la donnée réelle, les connecteurs et la stack opérationnelle
 > vivent dans une édition privée séparée.
 
-## État : Phase 1 — harnais sec local
+Un modèle de langage peut produire une thèse d'investissement convaincante, bien écrite
+— et **fausse**. Le vrai risque n'est pas qu'il se trompe : c'est qu'il se trompe de façon
+crédible, avec un chiffre inventé glissé dans un raisonnement par ailleurs solide.
 
-Il répond à **une seule question**, posée _avant_ toute technique :
+`finance-research-eval` ne cherche pas à produire de meilleures recommandations. Il définit
+et applique une **mesure** : un jeu de **gates déterministes** qui vérifient, indépendamment
+du modèle, qu'une recommandation est **traçable, recalculable et datée** — et qui la
+**bloquent** sinon. La question posée _avant_ toute technique :
 
 > **« Qu'est-ce qu'une recommandation financière justifiable, traçable et vérifiable ? »**
 
-On ne commence pas par « quel modèle choisir ? ». On commence par définir la
-**mesure** : un harnais qui décide si une analyse est _recevable_ (sourcée,
-recalculable, datée, cloisonnée) — **avant** qu'un modèle, une ingestion ou un
-backtest n'existe.
+On ne commence pas par « quel modèle choisir ? ». On commence par la mesure. Le modèle
+devient alors **interchangeable et benchmarkable** derrière le standard.
 
-**P1 (livré) = harnais sec local** : `RR synthétique → gates déterministes → rapport`.
-Python **stdlib pur, zéro dépendance**. Voir [« Lancer le harnais »](#lancer-le-harnais-sec).
+## L'idée clé : recevabilité avant exactitude
 
-### Périmètre encore verrouillé (interdits tant qu'un GO de phase distinct n'est pas donné)
+Le vérificateur est **séparé du modèle jugé** et **purement déterministe**. Il ne fait pas
+confiance à la prose : il **re-calcule chaque chiffre** à partir des données fournies et
+**refuse** ce qui ne tient pas — plutôt que d'« adoucir » en avertissement.
 
-- ❌ pas d'ingestion de données réelles
-- ❌ pas d'appel réseau à un fournisseur (EODHD / FMP / Tiingo / Sharadar / EDGAR)
-- ❌ pas d'appel à une API payante
-- ❌ pas de modèle / LLM branché (arrive en **P3**, en local)
-- ❌ pas de job GPU
-- ❌ pas de backtest
-- ❌ pas de conseil client généré
-- ❌ aucun impact sur un service d'inférence de production
-- ❌ pas de `git init` / `git push` (phase **Ouverture**)
-- ❌ pas de CI / hook (phase **Ouverture**)
+Conséquence, prouvée par les tests : une analyse peut être **« juste mais irrecevable »**.
+Un candidat qui donne la bonne réponse mais sans la sourcer ni la dater est **bloqué** sur
+la lane client ; un candidat qui source et recalcule proprement passe.
 
-Ce que P1 **contient** : du code **local, déterministe, sans données ni réseau ni
-modèle** — exactement la « substance technique avant publication » prévue. Les
-seules données sont des **fixtures synthétiques** fabriquées dans le repo.
+### Exemple (cas synthétique MEDISYN SA)
 
-### Lancer le harnais sec
+Une note d'analyse affiche un multiple « pas cher » de **EV/EBITDA = 6,5×**.
+Le vérificateur recalcule, indépendamment, à partir des données de la note :
 
-```bash
-# tests de conformité (stdlib unittest — aucune install, aucun réseau)
-python3 -m unittest discover -s tests -t .
-# rapport local (écrit runs/p1_dry_report.json, gitignored)
-python3 -m harness.runner
-# P2 : loaders publics sur échantillons synthétiques (offline, aucune vraie donnée)
-python3 -m harness.sources.demo
-# P3 : end-to-end EvalItem → candidat → RR → gates (mocks, offline, 0 VRAM)
-python3 -m harness.eval_run
+```
+EV / EBITDA = 2160 / 240 = 9,0×   ≠   6,5× annoncé
+→ G-3 (recalcul indépendant) : FAIL
+→ lane client-mifid : G-5 propage le blocage
+→ verdict : BLOCKED
 ```
 
-## Ce que ce dépôt est / n'est pas
+La note « avait l'air » correcte. Elle est **refusée** parce que le chiffre mis en avant
+n'est pas soutenu par les données. La même note avec un multiple cohérent passe `ADMISSIBLE`.
+Voir [`harness/fixtures/cases_patrimoine.py`](harness/fixtures/cases_patrimoine.py) +
+[`docs/usage-patrimoine-dossier-client.md`](docs/usage-patrimoine-dossier-client.md).
+
+## Démarrage rapide
+
+**Python stdlib pur — zéro dépendance, zéro réseau, zéro GPU.**
+
+```bash
+# Suite de conformité (le cœur : la table de gates verrouillée)
+python3 -m unittest discover -s tests -t .        # 163 tests, 0 réseau
+
+# Rapport local sur fixtures synthétiques (RR → gates → verdict)
+python3 -m harness.runner
+
+# Bout-en-bout : EvalItem → candidat (mock) → RR → gates  (offline, 0 VRAM)
+python3 -m harness.eval_run
+
+# Loaders publics sur échantillons synthétiques (offline, jamais les vraies données)
+python3 -m harness.sources.demo
+
+# Batch runner + rapport Markdown/CSV agrégé
+python3 -m harness.report
+```
+
+Toutes les données embarquées sont des **fixtures synthétiques** (sociétés fictives,
+ISIN préfixés `XX`). Aucune donnée réelle, aucune clé, aucun appel réseau.
+
+## Le Recommendation Record (RR) et les gates
+
+L'unité de sortie est le **Recommendation Record** : un objet où **chaque fait porte sa
+source et sa date**, et **chaque ratio porte à la fois la valeur affirmée par le modèle et
+la valeur recalculée**. C'est ce qui rend la vérification possible. Schéma machine-readable :
+[`harness/schema/recommendation_record.schema.json`](harness/schema/recommendation_record.schema.json).
+
+Six gates déterministes, avec une **sévérité par lane** :
+
+| Gate | Vérifie |
+|---|---|
+| **G-1** Sourcing | chaque chiffre cite une source + un locator |
+| **G-2** Audit | le RR est reproductible (hachage canonique du contenu) |
+| **G-3** Recalcul | les ratios recalculés correspondent aux valeurs affirmées (tolérance bornée) |
+| **G-4** Point-in-time | chaque donnée est datée (anti look-ahead / survivorship) |
+| **G-5** Blocage client | sur la lane `client-mifid`, un échec G-1/G-3 **bloque** (ne signale pas) |
+| **G-6** Cloisonnement | non-promotion entre lane perso et lane client |
+
+## Usage dual — et avertissement
+
+Le framework distingue deux **lanes** par un contrat explicite
+([`dual-use-contract.md`](.specify/specs/finance-research-eval/dual-use-contract.md)) :
+
+- **`personal-research`** — recherche personnelle ; G-1/G-3 *signalent* (FLAG).
+- **`client-mifid`** — contexte conseil ; G-1/G-3 *bloquent* (un défaut de sourcing ou de
+  recalcul rend la recommandation irrecevable).
+
+> **Avertissement.** Ce dépôt décrit un cadre d'ingénierie et d'évaluation. Il ne constitue
+> **ni un conseil en investissement, ni un conseil juridique**. La lane `client-mifid` doit
+> être **validée par la conformité / un juriste** avant tout usage réel relevant de MiFID II / AMF.
+
+## Ce que c'est / ce que ce n'est pas
 
 | C'est | Ce n'est pas |
 |---|---|
-| Une spec SDD du futur harnais d'évaluation | Un screener / stock-picker |
-| Un contrat d'usage dual (perso / client MIF II) | Un robot de trading |
-| Un jeu de gates de recevabilité (jour 0) | Un fournisseur de signaux d'achat |
+| Une mesure de recevabilité (gates déterministes) | Un screener / stock-picker |
+| Un standard de traçabilité (le RR) | Un robot de trading |
+| Un vérificateur model-agnostic | Un fournisseur de signaux d'achat |
 | Une définition de « recommandation justifiable » | Un conseil en investissement |
-| Model-agnostic par construction | Un choix de modèle |
 
-> **Avertissement.** Ce dépôt décrit un cadre d'ingénierie et d'évaluation.
-> Il ne constitue **ni un conseil en investissement, ni un conseil juridique**.
-> Le contrat « client-mifid » (cf. `dual-use-contract.md`) doit être **validé
-> par la conformité / un juriste** avant tout usage réel relevant de MiFID II / AMF.
+## Open-core & licence
 
-## Licence & modèle open-core
-
-Dépôt **public** sous approche **open-core** : le *framework de recevabilité* est
-ouvert ; la stack réelle (données, connecteurs, scoring, conformité opérationnelle)
-reste dans un **dépôt privé séparé** `finance-research-eval-enterprise`.
+Approche **open-core** : le *framework de recevabilité* est public ; la stack réelle
+(données, connecteurs, scoring propriétaire, conformité opérationnelle) vit dans un dépôt
+**privé séparé** `finance-research-eval-enterprise`. Règle de frontière (voir
+[`OPEN-CORE.md`](OPEN-CORE.md)) : *public = la mesure + interfaces + mocks + fixtures
+synthétiques ; privé = la réalité + données + ops*. Les gates et le RR sont **100 % publics,
+volontairement** — un actif de légitimité fait pour être cité.
 
 | Périmètre | Licence |
 |---|---|
-| **Code** (gates, schémas, moteurs de référence, mocks, tests) | **Apache-2.0** (`LICENSE`) |
-| **Spec & docs** (RR, gates, contrat dual-use) | **CC-BY-4.0** (`LICENSE-docs`) |
-| **Contributions** | **DCO** (`DCO`, `git commit -s`) — pas de CLA |
-| **Nom du projet** | politique de marque (`TRADEMARK.md`) |
+| **Code** (gates, schémas, moteurs de référence, mocks, tests) | **Apache-2.0** ([`LICENSE`](LICENSE)) |
+| **Spec & docs** (RR, gates, contrat dual-use) | **CC-BY-4.0** ([`LICENSE-docs`](LICENSE-docs)) |
+| **Contributions** | **DCO** ([`DCO`](DCO), `git commit -s`) — pas de CLA |
+| **Nom du projet** | politique de marque ([`TRADEMARK.md`](TRADEMARK.md)) |
 
-La frontière public/privé est définie dans **[`OPEN-CORE.md`](OPEN-CORE.md)** —
-à lire avant d'ajouter quoi que ce soit. Règle : *public = la mesure + interfaces +
-mocks + fixtures synthétiques ; privé = la réalité (impl. réelles) + données + ops*.
-Les gates et le Recommendation Record sont **100 % publics, volontairement** (actif
-de légitimité, fait pour être cité).
+Mainteneur : **Donald FOSSOUO / MARBO FINANCE** — `contact@marbo-finance.fr`.
+Sécurité & divulgation responsable : [`SECURITY.md`](SECURITY.md).
+Contribuer : [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## Structure
 
 ```
-finance-research-eval/
-├── README.md                                  ← vous êtes ici
-├── pyproject.toml                             ← métadonnées (zéro dépendance runtime)
-├── harness/                                    ← P1 : harnais sec (stdlib pur)
-│   ├── rr.py                                   ←   hachage canonique + validation RR
-│   ├── schema/recommendation_record.schema.json ← le standard RR (machine-readable)
-│   ├── compute/metrics.py                      ←   moteur de recalcul déterministe (G-3)
-│   ├── gates/gates.py                          ←   G-1..G-6 + sévérité par lane + verdict
-│   ├── fixtures/{synthetic,cases}.py           ←   RR synthétiques + catalogue de conformité
-│   ├── fixtures/cases_worked.py                 ←   cas E2E complet : FICTEX SA (analyste)
-│   ├── fixtures/cases_patrimoine.py             ←   cas patrimoine/CGP : MEDISYN SA (note OK + note refusée)
-│   ├── runner.py                               ←   fixtures → gates → rapport local
-│   ├── sources/                                ← P2 : loaders publics (pointeurs, offline)
-│   │   ├── registry.py                         ←   pointeurs : URL, licence, no-redistribution
-│   │   ├── evalitem.py                         ←   item d'éval normalisé (question+contexte+gold)
-│   │   ├── loaders.py                          ←   parsers offline FinanceBench/FinQA/EDGAR
-│   │   ├── samples/*.{jsonl,json}              ←   échantillons SYNTHÉTIQUES (jamais les vraies données)
-│   │   └── demo.py                             ←   démo offline (samples → EvalItems)
-│   ├── candidates/                             ← P3 : adaptateurs candidat (model-agnostic)
-│   │   ├── mock.py                             ←   faithful/sloppy mocks (0 VRAM, tests)
-│   │   └── http_openai.py                      ←   modèle réel via endpoint OpenAI-compatible
-│   ├── eval_run.py                             ←   EvalItem → candidat → RR → gates → rapport
-│   ├── report.py                               ← P4 : batch runner + rapport Markdown/CSV (stdlib, offline)
-│   └── export.py                               ← P5 : exporteur RR (JSONL + manifest + thesis-card Markdown)
-├── tests/                                      ← unittest stdlib (163 tests, 0 réseau)
-│   ├── test_gates_conformity.py               ←   table de conformité verrouillée (vérificateur déterministe)
-│   ├── test_compute.py
-│   └── test_schema.py
-├── LICENSE                                     ← Apache-2.0 (code)
-├── LICENSE-docs                               ← CC-BY-4.0 (spec & docs)
-├── NOTICE                                      ← attributions + périmètre open-core
-├── DCO                                         ← Developer Certificate of Origin
-├── OPEN-CORE.md                                ← contrat de frontière public/privé
-├── GOVERNANCE.md                               ← qui décide, évolution du standard
-├── CONTRIBUTING.md                             ← scope + DCO + standard high-scrutiny
-├── SECURITY.md                                 ← divulgation responsable + usage responsable
-├── CODE_OF_CONDUCT.md                          ← Contributor Covenant 2.1
-├── TRADEMARK.md                                ← politique de nom / source canonique
-├── CHANGELOG.md                                ← versionnage du standard (SemVer)
-├── .gitignore                                  ← anti-fuite (deny-by-default)
-└── .specify/
-    ├── memory/
-    │   └── constitution.md                    ← principes directeurs + question centrale
-    └── specs/
-        └── finance-research-eval/
-            ├── spec.md                         ← spec SDD (FR-001..FR-012)
-            ├── harness-structure.md            ← /specify : layout du futur harnais (décrit, non bâti)
-            ├── dual-use-contract.md            ← lanes personal-research / client-mifid
-            └── eval-gates.md                   ← gates jour 0 : G-1..G-6
+harness/
+├── rr.py                     hachage canonique + validation RR (G-2)
+├── schema/…schema.json       le standard RR (machine-readable)
+├── compute/metrics.py        moteur de recalcul déterministe (G-3)
+├── gates/gates.py            G-1..G-6 + sévérité par lane + verdict
+├── fixtures/                 RR synthétiques + catalogue de conformité
+│   ├── cases_worked.py       cas E2E analyste : FICTEX SA
+│   └── cases_patrimoine.py   cas CGP : MEDISYN SA (note OK + note refusée)
+├── sources/                  loaders publics (pointeurs, offline) + échantillons synthétiques
+├── candidates/               adaptateurs candidat model-agnostic (mock + endpoint OpenAI-compat)
+├── eval_run.py               EvalItem → candidat → RR → gates → rapport
+├── report.py                 batch runner + rapport Markdown/CSV
+└── export.py                 exporteur RR (JSONL + manifest + thesis-card Markdown)
+tests/                        unittest stdlib (163 tests, 0 réseau)
+.specify/specs/…              spec SDD, contrat dual-use, définition des gates
 ```
 
-> ⚠️ `.github/` (templates issue/PR + CI) et le hook anti-fuite pre-commit sont
-> **différés à la phase _ouverture_** (pas à P1) : une CI ne tourne qu'au push et un
-> hook pre-commit n'a pas de sens avant `git init`. Les inclure en P1 reviendrait à
-> « transformer le repo en produit actif », ce que P1 doit éviter. P1 = substance
-> technique locale (schéma + gates + tests synthétiques), sans `git`, sans réseau.
+## Statut & feuille de route
 
-## Données — décision confirmée
+| Étape | Contenu | Statut |
+|---|---|---|
+| Doctrine + gouvernance open-core | principes, licences, frontière public/privé | ✅ public |
+| Harnais de recevabilité | RR + gates G-1..G-6 + recalcul déterministe + fixtures + tests | ✅ public |
+| Loaders publics | benchmarks (FinanceBench/FinQA/…) + EDGAR en **pointeurs**, jamais de redistribution | ✅ public |
+| Candidat model-agnostic | mocks + endpoint OpenAI-compatible ; le modèle devient benchmarkable | ✅ public |
+| Batch + export | reporting agrégé Markdown/CSV + bundle RR + thesis-card | ✅ public |
+| Enterprise | ingestion réelle, point-in-time, fournisseurs, conformité, backtest | 🔒 privé, planifié |
 
-**On ne paie rien maintenant.** V1 = **benchmarks publics** (FinanceBench, FinQA,
-ConvFinQA, TAT-QA) + **SEC EDGAR** (gratuit). Les fournisseurs **EODHD / FMP /
-Tiingo / Sharadar** sont **repoussés** à une phase ingestion/backtest ultérieure,
-après un **test de couverture FR/EU** explicite. Aucun de ces fournisseurs n'est
-appelé en Phase 0. Voir `spec.md` §Données.
-
-## Phases (chacune nécessite un GO distinct)
-
-| Phase | Contenu | Repo | Statut |
-|---|---|---|---|
-| **P0** | Doctrine + open-core + gouvernance | public | ✅ fait |
-| **P1** | Harnais sec **local** : `RR synthétique → gates déterministes → rapport`. Schéma RR, gates, compute, fixtures, tests. **Pas de git, données, LLM, réseau, GPU.** | public | ✅ fait (12 tests verts, 10 cas) |
-| **P2** | Loaders publics : benchmarks + EDGAR (**pointeurs**, pas de redistribution). **Aucune donnée privée.** | public | ✅ fait (loaders offline FinanceBench/FinQA/EDGAR + pointeurs ConvFinQA/TAT-QA, 19 tests verts) |
-| **P3** | Candidate/**modèle branché localement** (GPU local idle), sur public/synthétique. Le modèle devient benchmarkable + interchangeable. | public | ✅ fait (e2e mocks 23 tests + live vs endpoint OpenAI-compatible, 0 VRAM nouvelle) |
-| **P4** | Batch runner + reporting : N candidats × M lanes × K item-sets → stats de gates agrégées, rapport Markdown + export CSV, `run_id` déterministe. **stdlib pur, offline, fixtures synthétiques.** | public | ✅ fait (`harness/report.py`, 41 tests verts) |
-| **P5** | Exporteur RR : bundle JSONL durable par RR + manifest `index.json` + thesis-card Markdown (provenance, claims, recalcul indépendant, synthèse de gates). Cas E2E **FICTEX SA synthétique** sur les deux lanes. **stdlib pur, offline, aucune donnée réelle.** | public | ✅ fait (`harness/export.py` + `fixtures/cases_worked.py`, 69 tests verts) |
-| **Ouverture** | **Seulement quand le standard est clair** : `git init`, emails placeholder, CI, hooks anti-fuite, repo `-enterprise`, push. | public | ⏸ GO requis |
-| **Enterprise** | Ingestion réelle, FR/EU premium, point-in-time, fournisseurs payants, intégration MARBO, conformité, workflows, backtest. | **privé** | différé |
-
-**Principe directeur — ne pas ouvrir trop tôt.** L'ouverture vient **après P3**, pas
-après P0 : on n'ouvre que lorsque le dépôt *prouve* la méthode (RR vérifiable +
-gates + fixtures + tests), pas lorsqu'il la *promet*. Gouvernance seule = intention ;
-gates exécutables = standard.
-
-> Cette table est la **source de vérité de la roadmap**. Les marqueurs de phase
-> inline dans `spec.md` / `harness-structure.md` (anciens P1..P6) sont **supersédés**
-> par cette séquence et seront resynchronisés quand ces fichiers seront édités en P1.
-
-Rien au-delà de P0 ne démarre sans validation explicite, phase par phase.
+> **Données — décision assumée :** on ne paie rien pour démarrer. Le cœur public s'appuie sur
+> des **benchmarks publics** et **SEC EDGAR** (gratuit), uniquement en **pointeurs** (aucune
+> donnée redistribuée). Les fournisseurs payants relèvent de l'édition Enterprise.
