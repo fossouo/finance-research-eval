@@ -14,6 +14,15 @@ Recommendation Record schema or to any gate's pass/fail semantics is a **major**
 - `docs/usage-patrimoine-dossier-client.md`: step-by-step guide for using the harness on a fictitious client dossier (run both notes, read the verdict, adapt to your own synthetic case). 100 % offline/synthetic; production sources/models remain locked.
 - `tests/test_cases_patrimoine.py`: 19 tests — lane/reco_nature/no-suitability invariants, admissible all-PASS, rejected isolated to G-3/G-5, no real-ISIN leak.
 
+### Added (P5 — RR exporter + FICTEX SA worked case)
+- `harness/export.py`: durable RR archival — `export_jsonl`/`load_jsonl` (one JSON Lines bundle per RR), `build_index` (lightweight `index.json` manifest: id, lane, verdict, hash, gates), `format_thesis_card` (Markdown analyst artifact: provenance, claims, evidence table, independent-recompute table, gate summary), `export_bundle` (writes `index.json` + per-RR `.jsonl` + `*-card.md` to a caller-supplied `out_dir`). Local file I/O only — **no network**.
+- `harness/fixtures/cases_worked.py`: **FICTEX SA**, a synthetic mid-cap internally consistent across all 7 metrics; exercises G-1..G-6 end-to-end on both lanes; `comparable_ev` demonstrates peer-multiple valuation. `build_worked_case()` / `run_worked_case()`.
+- `tests/test_export.py`: 69 tests — RR structure/determinism, JSONL roundtrip, index counts, thesis-card sections, bundle idempotency, full conformity catalogue, ISIN guard. **stdlib pur, offline, fixtures synthétiques, aucune donnée client réelle, aucun connecteur réel, aucun secret.**
+
+### Added (P4 — batch runner + Markdown/CSV report)
+- `harness/report.py`: `batch_run()` (N candidates × M lanes × K item-sets → aggregated gate stats, admissibility/accuracy rates, deterministic `run_id` via `zlib.crc32`, stable across runs), `format_markdown()` (human-readable report: overview, aggregate, per-run breakdown, gate statistics, key findings), `format_csv()` (flat one-row-per-record export, stable column order). `python3 -m harness.report` offline demo entry-point.
+- `tests/test_report.py`: 41 tests — batch structure, run-count, `run_id` stability, aggregate invariants, faithful/sloppy discrimination, Markdown headings/disclaimer, CSV header/verdict columns. **stdlib pur, offline, fixtures synthétiques, aucune donnée réelle, aucun connecteur, aucun secret.**
+
 ### Added (Phase 3 — candidate/model branched, end-to-end)
 - `harness/candidates/`: model-agnostic candidate adapters. `base.assemble_rr` (EvalItem→RR), `mock.py` (FaithfulMock + SloppyMock, deterministic, 0 VRAM), `http_openai.py` (any OpenAI-compatible endpoint; the only networked module).
 - `harness/eval_run.py`: end-to-end `EvalItem → candidate → RR → gates → report`, scoring recevability AND accuracy separately (FR-011). `python3 -m harness.eval_run` (offline mock demo).

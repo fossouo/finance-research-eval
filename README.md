@@ -106,8 +106,10 @@ finance-research-eval/
 │   ├── candidates/                             ← P3 : adaptateurs candidat (model-agnostic)
 │   │   ├── mock.py                             ←   faithful/sloppy mocks (0 VRAM, tests)
 │   │   └── http_openai.py                      ←   modèle réel via endpoint OpenAI-compatible
-│   └── eval_run.py                             ←   EvalItem → candidat → RR → gates → rapport
-├── tests/                                      ← unittest stdlib (23 tests, 0 réseau)
+│   ├── eval_run.py                             ←   EvalItem → candidat → RR → gates → rapport
+│   ├── report.py                               ← P4 : batch runner + rapport Markdown/CSV (stdlib, offline)
+│   └── export.py                               ← P5 : exporteur RR (JSONL + manifest + thesis-card Markdown)
+├── tests/                                      ← unittest stdlib (163 tests, 0 réseau)
 │   ├── test_gates_conformity.py               ←   table de conformité verrouillée (vérificateur déterministe)
 │   ├── test_compute.py
 │   └── test_schema.py
@@ -156,6 +158,8 @@ appelé en Phase 0. Voir `spec.md` §Données.
 | **P1** | Harnais sec **local** : `RR synthétique → gates déterministes → rapport`. Schéma RR, gates, compute, fixtures, tests. **Pas de git, données, LLM, réseau, GPU.** | public | ✅ fait (12 tests verts, 10 cas) |
 | **P2** | Loaders publics : benchmarks + EDGAR (**pointeurs**, pas de redistribution). **Aucune donnée privée.** | public | ✅ fait (loaders offline FinanceBench/FinQA/EDGAR + pointeurs ConvFinQA/TAT-QA, 19 tests verts) |
 | **P3** | Candidate/**modèle branché localement** (GPU local idle), sur public/synthétique. Le modèle devient benchmarkable + interchangeable. | public | ✅ fait (e2e mocks 23 tests + live vs endpoint OpenAI-compatible, 0 VRAM nouvelle) |
+| **P4** | Batch runner + reporting : N candidats × M lanes × K item-sets → stats de gates agrégées, rapport Markdown + export CSV, `run_id` déterministe. **stdlib pur, offline, fixtures synthétiques.** | public | ✅ fait (`harness/report.py`, 41 tests verts) |
+| **P5** | Exporteur RR : bundle JSONL durable par RR + manifest `index.json` + thesis-card Markdown (provenance, claims, recalcul indépendant, synthèse de gates). Cas E2E **FICTEX SA synthétique** sur les deux lanes. **stdlib pur, offline, aucune donnée réelle.** | public | ✅ fait (`harness/export.py` + `fixtures/cases_worked.py`, 69 tests verts) |
 | **Ouverture** | **Seulement quand le standard est clair** : `git init`, emails placeholder, CI, hooks anti-fuite, repo `-enterprise`, push. | public | ⏸ GO requis |
 | **Enterprise** | Ingestion réelle, FR/EU premium, point-in-time, fournisseurs payants, intégration MARBO, conformité, workflows, backtest. | **privé** | différé |
 
