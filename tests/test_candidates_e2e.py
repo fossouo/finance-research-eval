@@ -1,7 +1,7 @@
-"""End-to-end P3 tests (offline, 0 VRAM, 0 network).
+"""End-to-end candidate tests (offline, 0 VRAM, 0 network).
 
 Prove the full loop EvalItem -> candidate -> RR -> gates, and that the harness
-discriminates a faithful candidate from a sloppy one — the core value of P3.
+discriminates a faithful candidate from a sloppy one — the core value of the harness.
 """
 import unittest
 

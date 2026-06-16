@@ -2,7 +2,7 @@
 and the recevability harness.
 
 An EvalItem is purely an INPUT (a question + grounded context + a gold answer).
-P2 stops here: it does NOT produce an answer (that is a candidate's job in P3).
+A source stops here: it does NOT produce an answer (that is a candidate's job).
 The context snippets are already shaped like sourced evidence, so a future
 candidate can map an EvalItem into a Recommendation Record with real locators.
 """

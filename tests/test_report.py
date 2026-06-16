@@ -1,4 +1,4 @@
-"""Tests for the P4 batch runner + report generator (harness.report).
+"""Tests for the batch runner + report generator (harness.report).
 
 All offline — 0 VRAM, 0 network, synthetic mocks only.
 

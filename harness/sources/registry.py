@@ -61,7 +61,7 @@ SOURCES = {
         license="Verify at source before any redistribution (treat as restricted).",
         citation="Chen et al., ConvFinQA: Exploring the Chain of Numerical Reasoning in Conversational Finance, EMNLP 2022.",
         fmt="json",
-        loader="",  # pointer-only in P2
+        loader="",  # pointer-only
         local_path_hint="corpora/convfinqa/dev.json",
     ),
     "tatqa": Source(
@@ -72,7 +72,7 @@ SOURCES = {
         license="Verify at source before any redistribution (treat as restricted).",
         citation="Zhu et al., TAT-QA: A Question Answering Benchmark on a Hybrid of Tabular and Textual Content in Finance, ACL 2021.",
         fmt="json",
-        loader="",  # pointer-only in P2
+        loader="",  # pointer-only
         local_path_hint="corpora/tatqa/tatqa_dataset_test.json",
     ),
     "edgar": Source(

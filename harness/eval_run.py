@@ -90,7 +90,7 @@ def _all_synthetic_items():
 def main():
     from harness.candidates.mock import FaithfulMockCandidate, SloppyMockCandidate
     items = _all_synthetic_items()
-    print("finance-research-eval — P3 end-to-end (offline, mock candidates, 0 VRAM)")
+    print("finance-research-eval — end-to-end (offline, mock candidates, 0 VRAM)")
     print("=" * 64)
     for cand in (FaithfulMockCandidate(), SloppyMockCandidate()):
         for lane in ("personal-research", "client-mifid"):

@@ -148,11 +148,11 @@ _LOADERS = {
 def load(source_id: str, path=None) -> list:
     """Load EvalItems for a registered source from a local path. Falls back to
     the source's ``local_path_hint`` if no path is given. Pointer-only sources
-    (no loader implemented in P2) raise NotImplementedError."""
+    (no loader implemented) raise NotImplementedError."""
     src = registry.get(source_id)
     if not src.loader:
         raise NotImplementedError(
-            f"'{source_id}' is pointer-only in P2 (see registry: {src.homepage})."
+            f"'{source_id}' is pointer-only (see registry: {src.homepage})."
         )
     fn = _LOADERS[src.loader]
     return fn(path or src.local_path_hint)

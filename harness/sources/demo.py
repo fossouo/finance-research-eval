@@ -9,13 +9,13 @@ from harness.sources import loaders, registry
 
 
 def main():
-    print("finance-research-eval — P2 public loaders — offline demo")
+    print("finance-research-eval — public loaders — offline demo")
     print("(synthetic samples only — no network, no real data, no model)")
     print("=" * 64)
     for sid in registry.list_sources():
         src = registry.get(sid)
         if not src.loader:
-            print(f"\n[{sid}]  {src.name}  ->  POINTER-ONLY in P2")
+            print(f"\n[{sid}]  {src.name}  ->  POINTER-ONLY")
             print(f"   obtain: {src.obtain}")
             continue
         items = loaders.load_sample(sid)

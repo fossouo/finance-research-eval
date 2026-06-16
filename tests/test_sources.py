@@ -1,6 +1,6 @@
-"""Tests for the public source loaders (P2).
+"""Tests for the public source loaders.
 
-Enforce the P2 invariants: offline only, synthetic samples valid, pointers
+Enforce the invariants: offline only, synthetic samples valid, pointers
 complete, no network imports, pointer-only sources refuse to load.
 """
 import os

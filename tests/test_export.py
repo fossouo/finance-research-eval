@@ -1,4 +1,4 @@
-"""Tests for harness.export (P5 RR exporter) and harness.fixtures.cases_worked.
+"""Tests for harness.export (RR exporter) and harness.fixtures.cases_worked.
 
 All offline — 0 VRAM, 0 network, synthetic mocks only.
 

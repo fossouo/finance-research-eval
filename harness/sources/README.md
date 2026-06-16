@@ -17,7 +17,7 @@ hard rules from `OPEN-CORE.md`:
 Downloaded datasets live under `corpora/` at the repo root, which is **gitignored**
 (see `.gitignore`). Nothing under `corpora/` is ever committed.
 
-## Sources (P2)
+## Sources
 
 | id | name | loader | status | how to obtain |
 |---|---|---|---|---|
@@ -40,10 +40,10 @@ python3 -m harness.sources.demo
 Loads the synthetic samples through the real loaders and prints normalized
 `EvalItem` counts — no network, no real data.
 
-## What P2 does NOT do
+## What this layer does NOT do
 
 - It does **not** download anything (you fetch data yourself).
-- It does **not** run a model (the candidate arrives in **P3**).
+- It does **not** run a model (a candidate is plugged in downstream).
 - It does **not** produce answers or recommendations — an `EvalItem` is an INPUT
   (question + grounded context + gold). The context snippets are pre-shaped like
-  sourced evidence so a P3 candidate can map them into a Recommendation Record.
+  sourced evidence so a candidate can map them into a Recommendation Record.

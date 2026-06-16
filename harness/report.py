@@ -38,7 +38,7 @@ def batch_run(
 
     Args:
         candidates: list of candidate objects (must have a ``.name`` attribute
-            and a ``produce_rr(item, lane)`` method — same contract as P3).
+            and a ``produce_rr(item, lane)`` method — the candidate contract).
         items_by_label: ``{label: [EvalItem, ...]}`` — e.g.
             ``{"financebench": items_fb, "finqa": items_fq}``.
             The labels are cosmetic; they appear in the report.

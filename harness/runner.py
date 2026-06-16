@@ -1,6 +1,6 @@
 """Local runner — synthetic fixtures -> deterministic gates -> local report.
 
-Pure stdlib. No data, no network, no model, no GPU. This IS the P1 dry proof of
+Pure stdlib. No data, no network, no model, no GPU. This IS the dry proof of
 recevability: a Recommendation Record (synthetic) flows through the gates and
 produces a local report.
 

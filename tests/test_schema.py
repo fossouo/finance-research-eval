@@ -1,7 +1,8 @@
 """Tests for the RR JSON Schema file and the lightweight structural validator.
 
-The JSON Schema is the machine-readable standard; P1 ships a dependency-free
-structural validator (a full jsonschema check is wired at the Opening/CI phase).
+The JSON Schema is the machine-readable standard; the harness ships a
+dependency-free structural validator (a full jsonschema check is an optional
+CI dependency).
 """
 import json
 import os
