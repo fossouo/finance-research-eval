@@ -12,8 +12,8 @@ from __future__ import annotations
 import math
 
 # Relative tolerance between a model-proposed value and the independently
-# recomputed value. Default 0.5 % (spec §10 open question, intentionally
-# configurable) to absorb presentation rounding. abs_tol guards near-zero.
+# recomputed value. Default 0.5 % (intentionally configurable) to absorb
+# presentation rounding. abs_tol guards near-zero.
 DEFAULT_REL_TOL = 0.005
 DEFAULT_ABS_TOL = 1e-9
 

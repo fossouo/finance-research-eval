@@ -8,7 +8,7 @@ the normative definition of each gate.
 Severity model (eval-gates.md): each gate has a per-lane severity.
   BLOCK / REQUIRED -> a failure blocks the verdict (-> BLOCKED).
   FLAG             -> a failure is recorded but does not block (personal lane:
-                      the founder is the sole judge).
+                      the user is the sole judge).
   NA               -> the gate is not evaluated for this lane.
 """
 from __future__ import annotations

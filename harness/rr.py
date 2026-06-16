@@ -1,10 +1,10 @@
 """Recommendation Record (RR) helpers — canonical hashing + lightweight
 structural validation.
 
-Pure stdlib. In P1 we do NOT pull a third-party JSON-Schema validator; the JSON
-Schema under ``harness/schema/`` is the machine-readable standard, and this
-module is the dependency-free dry-harness validator. A full ``jsonschema`` check
-is wired at the Opening/CI phase, not in the local dry harness.
+Pure stdlib — no third-party JSON-Schema validator. The JSON Schema under
+``harness/schema/`` is the machine-readable standard, and this module is the
+dependency-free structural validator. A full ``jsonschema`` check is available via
+the optional ``ci`` dependency group (see ``pyproject.toml``).
 """
 from __future__ import annotations
 

@@ -1,9 +1,9 @@
-"""End-to-end P3 run: EvalItem -> candidate -> Recommendation Record -> gates
+"""End-to-end run: EvalItem -> candidate -> Recommendation Record -> gates
 -> report (recevability AND accuracy).
 
 This closes the loop. A candidate (mock or a real model via http_openai) turns
 each EvalItem into an RR; the gates judge recevability; we also score the answer
-against the gold. Per FR-011 the two scores are reported separately —
+against the gold. By design the two scores are reported separately —
 recevability primes (a correct-but-unsourced answer is still BLOCKED).
 
 Offline demo (0 VRAM, 0 network):  python3 -m harness.eval_run

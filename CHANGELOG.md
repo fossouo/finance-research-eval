@@ -9,6 +9,9 @@ Recommendation Record schema or to any gate's pass/fail semantics is a **major**
 
 ## [Unreleased]
 
+> **Current state:** public open-core, test suite **163 green** (stdlib, no network).
+> Per-phase counts below are historical snapshots at the time each block shipped.
+
 ### Added (Patrimoine / CGP worked case)
 - `harness/fixtures/cases_patrimoine.py`: MEDISYN SA, a synthetic mid-cap pharma. Two companion `client-mifid` general-research notes — one **ADMISSIBLE** (every computation recomputes exactly) and one **BLOCKED** (a fabricated EV/EBITDA of 6.5× vs a recomputed 9.0× → G-3 FAIL → G-5 propagates). Demonstrates the verifier refusing, not softening, a "cheap multiple" the evidence does not support.
 - `docs/usage-patrimoine-dossier-client.md`: step-by-step guide for using the harness on a fictitious client dossier (run both notes, read the verdict, adapt to your own synthetic case). 100 % offline/synthetic; production sources/models remain locked.
@@ -31,7 +34,7 @@ Recommendation Record schema or to any gate's pass/fail semantics is a **major**
 ### Notes (Phase 3)
 - Offline e2e: full suite 23/23 OK; faithful→all admissible, sloppy→blocked on client lane.
 - Live proof: ran `http_openai` against a pre-loaded OpenAI-compatible endpoint — **0 new VRAM**. The real model returned correct numbers but unsourced/undated → gates G-1/G-4 failed → BLOCKED on the client lane. The thesis, demonstrated with a real LLM.
-- Next: **Ouverture** (git init, emails, CI, hooks, `-enterprise` repo, push) — only when the standard is deemed clear enough.
+- Published as public open-core (separate private enterprise repo for real data/connectors).
 
 ### Added (Phase 2 — public source loaders, offline)
 - `harness/sources/registry.py`: pointer registry for public sources (FinanceBench, FinQA, ConvFinQA, TAT-QA, SEC EDGAR) — homepage, obtain-it-yourself, license, citation, `redistribution_allowed` (default False). No data bundled.

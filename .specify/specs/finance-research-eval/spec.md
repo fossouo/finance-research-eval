@@ -1,21 +1,20 @@
-# Spec SDD — finance-research-eval (Phase 0)
+# Spec SDD — finance-research-eval
 
 | | |
 |---|---|
 | **Feature** | Harnais d'évaluation de recevabilité pour l'analyse fondamentale assistée par LLM |
-| **Statut** | Phase 0 — **design-only**, aucune exécution |
+| **Statut** | **Implémenté** — harnais public (gates G-1..G-6, RR, recalcul déterministe, loaders publics, candidats, reporting) |
 | **Constitution** | `.specify/memory/constitution.md` (P-1..P-7) |
-| **Auteur** | Founder (Marbo) + Claude (rédaction) |
+| **Auteur** | Donald FOSSOUO / MARBO FINANCE (rédaction assistée par IA) |
 | **Date** | 2026-06-13 |
 
 ---
 
 ## 1. Contexte & problème
 
-Objectif final (hors Phase 0) : détecter des sociétés **sous-valorisées par le
-marché** pour un horizon d'achat/revente **1–5 ans**, à partir de rapports
-financiers + données de marché/actualité, **sur infra locale** (portion faible,
-GPU local idle), à coût ≈ 0 €.
+Objectif final (au-delà du cœur public) : détecter des sociétés **sous-valorisées
+par le marché** pour un horizon d'achat/revente **1–5 ans**, à partir de rapports
+financiers + données de marché/actualité, **sur infra locale**, à coût ≈ 0 €.
 
 Problème réel : « détecter du sous-valorisé » n'est pas un problème de modèle.
 C'est **un problème de discipline** — un LLM hallucine des chiffres, et une thèse
@@ -24,34 +23,33 @@ Avant de produire la moindre recommandation, il faut **une mesure** de ce qu'est
 une analyse _recevable_.
 
 **Décision méthodologique (validée).** On construit le **harnais d'évaluation
-d'abord** (eval-first), exactement comme le pattern `edu-eval-harness` (ancrage
-sur référentiel public + extension domaine + gate de sécurité déterministe).
+d'abord** (eval-first) : ancrage sur référentiel public + extension domaine + gate
+de sécurité déterministe, avant tout choix de modèle.
 
 ## 2. Décomposition (où est le travail)
 
-| # | Brique | Responsable | Hors Phase 0 |
+| # | Brique | Responsable | Hors cœur public |
 |---|---|---|---|
-| 1 | Ingestion (filings + marché + news) | pipeline data | oui |
-| 2 | Extraction des fondamentaux **ancrée/citée** | LLM + localisateur | oui |
-| 3 | Valorisation / ratios | **moteur déterministe** | oui |
-| 4 | Thèse qualitative (moat, mgmt, risques) | LLM / RAG | oui |
-| 0 | **Mesure de recevabilité de 1–4** | **harnais d'éval** | **← Phase 0 (ce dépôt)** |
+| 1 | Ingestion (filings + marché + news) | pipeline data | oui (enterprise) |
+| 2 | Extraction des fondamentaux **ancrée/citée** | LLM + localisateur | oui (enterprise) |
+| 3 | Valorisation / ratios | **moteur déterministe** | oui (enterprise) |
+| 4 | Thèse qualitative (moat, mgmt, risques) | LLM / RAG | oui (enterprise) |
+| 0 | **Mesure de recevabilité de 1–4** | **harnais d'éval** | **← le cœur public (ce dépôt)** |
 
 ## 3. Objectifs / Non-objectifs
 
-**Objectifs (Phase 0)**
-- Définir l'**unité de sortie** du système : le *Recommendation Record* (RR).
-- Définir les **gates de recevabilité** jour 0 (G-1..G-6, cf. `eval-gates.md`).
-- Définir le **contrat dual-use** (cf. `dual-use-contract.md`).
-- Décrire la **structure du futur harnais** (cf. `harness-structure.md`), non bâtie.
-- Figer la **décision data** (gratuit only en V1).
+**Objectifs (cœur public — livrés)**
+- L'**unité de sortie** : le *Recommendation Record* (RR).
+- Les **gates de recevabilité** G-1..G-6 (cf. `eval-gates.md`), implémentés et testés.
+- Le **contrat dual-use** (cf. `dual-use-contract.md`).
+- La **structure du harnais** (cf. `harness-structure.md`).
+- La **décision data** (gratuit only en V1).
 
-**Non-objectifs (Phase 0 — interdits)**
-- Choisir / télécharger / servir un modèle.
-- Ingérer ou appeler une donnée (EDGAR, fournisseurs, marché).
-- Implémenter quoi que ce soit d'exécutable.
-- Produire une recommandation (perso ou client).
-- Backtester.
+**Hors cœur public (édition enterprise privée)**
+- Servir un modèle de production / brancher une vraie ingestion.
+- Appeler une donnée réelle (EDGAR live, fournisseurs payants, marché).
+- Produire une recommandation client réelle (sans re-validation humaine).
+- Backtester sur données réelles point-in-time.
 
 ## 4. Artefact central — le *Recommendation Record* (RR)
 
@@ -91,7 +89,9 @@ Le **harnais** prend un RR (ou la question + la sortie d'un candidat) et calcule
 
 ## 5. Exigences fonctionnelles (FR)
 
-> Ces FR décrivent le **futur** système ; aucune n'est implémentée en Phase 0.
+> FR-001 à FR-009 et FR-011 sont **implémentées** dans le cœur public (gates, RR,
+> recalcul, candidats model-agnostic). FR-010 (ingestion de données réelles) relève
+> de l'édition enterprise.
 
 - **FR-001** — L'unité de sortie est le RR structuré (§4). Toute analyse non
   exprimable en RR est hors-système.
@@ -117,18 +117,18 @@ Le **harnais** prend un RR (ou la question + la sortie d'un candidat) et calcule
 - **FR-010** — **Données V1 = gratuit only** : benchmarks publics (FinanceBench,
   FinQA, ConvFinQA, TAT-QA) + SEC EDGAR. Fournisseurs payants (EODHD/FMP/Tiingo/
   Sharadar) **différés** à une phase ingestion/backtest, après test de couverture
-  FR/EU. Aucun appel en Phase 0.
+  FR/EU. Aucun appel réseau dans le cœur public.
 - **FR-011** — Le harnais produit **deux scores distincts** : (a) *recevabilité*
   (conformité aux gates) et (b) *exactitude* (vs gold quand disponible). La
   recevabilité prime (un RR exact mais non sourcé reste `BLOCKED`).
-- **FR-012** — **Design-only jusqu'à GO.** Aucune FR n'est exécutée sans
-  validation explicite, phase par phase.
+- **FR-012** — **Frontière open-core.** Tout usage avec des données réelles ou en
+  production relève de l'édition enterprise privée (cf. `OPEN-CORE.md`).
 
 ## 6. Ancrage & extension (le harnais, vu de haut)
 
-Décalque de `edu-eval-harness` :
+Pattern eval-first : ancrer sur un référentiel public, puis étendre au domaine.
 
-**Ancrage (référentiel public, reproductible)** — décrit, non téléchargé :
+**Ancrage (référentiel public, reproductible)** — en pointeurs, non redistribué :
 - **FinanceBench** — ~10k QA vérifiées sur 10-K/10-Q réels (l'équivalent gsm8k/mmlu).
 - **FinQA / ConvFinQA** — raisonnement numérique sur tables+texte (teste G-3).
 - **TAT-QA** — hybride table+texte.
@@ -153,33 +153,35 @@ FinAuditing (multi-documents), `agent-finance-reasoning` (Snorkel, angle tool-us
   - Tiingo, Sharadar : point-in-time ✅ — US-centré.
   - EODHD : couverture Euronext/FR ✅ — point-in-time partiel.
   - FMP : large couverture — point-in-time « as reported ».
-- **Décision fournisseur différée** à la phase **Enterprise** (privée), après
-  **test de couverture sur 5–10 tickers FR** que le founder connaît. L'univers « mix global » poussera
-  probablement vers **EODHD** (seul à couvrir Euronext proprement), complété par
-  EDGAR pour le point-in-time US.
+- **Décision fournisseur différée** à la phase **Enterprise** (privée), après un
+  **test de couverture sur 5–10 tickers FR de référence**. Un univers « mix global »
+  pousserait probablement vers **EODHD** (seul à couvrir Euronext proprement),
+  complété par EDGAR pour le point-in-time US.
 
-## 8. Critères de succès (Phase 0)
+## 8. Critères de succès
 
-- [ ] Les 6 livrables Markdown existent et sont cohérents entre eux.
-- [ ] Le RR (§4) couvre les 6 gates sans trou.
-- [ ] Le contrat dual-use distingue sans ambiguïté les deux lanes + la barrière
+- [x] Le RR (§4) couvre les 6 gates sans trou.
+- [x] Le contrat dual-use distingue sans ambiguïté les deux lanes + la barrière
       de non-promotion.
-- [ ] Aucun fichier exécutable, aucun appel réseau, aucun secret.
-- [ ] La décision data (gratuit only) est explicitement tracée.
+- [x] Gates G-1..G-6 implémentés, déterministes, testés (suite verte).
+- [x] La décision data (gratuit only) est explicitement tracée.
+
+**Invariant permanent du cœur public** : aucune donnée réelle, aucun appel réseau
+en suite de tests, aucun secret. Garanti par `tools/check_public_hygiene.sh` (CI + hook).
 
 ## 9. Hors-scope / différé
 
-Tout ce qui n'est pas « rédiger la mesure » : ingestion, modèle, RAG, backtest,
-fournisseurs payants, UI, déploiement, génération de recommandation. Chacun =
-phase ultérieure avec GO distinct (cf. README §Phases).
+Ingestion de données réelles, modèle de production, RAG, backtest, fournisseurs
+payants, UI, déploiement, génération de recommandation client réelle : relèvent de
+l'édition enterprise privée (cf. `OPEN-CORE.md` + la feuille de route du README).
 
-## 10. Questions ouvertes (à trancher avant P1)
+## 10. Questions ouvertes
 
-1. **Tolérance de recalcul** (G-3) : exact, ou bande relative (ex. ±0,5 %) pour
-   absorber arrondis de présentation ? Probablement bande relative paramétrable.
-2. **Granularité du `locator`** : page seule, ou span/cellule de table ? Plus fin
-   = meilleur G-1 mais plus coûteux à produire.
-3. **Schéma `lane_fields` MIF II** : périmètre minimal viable de la déclaration
-   d'adéquation (à valider conformité).
-4. **Format de persistance du RR** : JSON-LD pour l'audit-trail, ou autre ?
-   (décision P1, design-only d'ici là).
+1. **Tolérance de recalcul** (G-3) : ✅ **résolu** — bande relative ±0,5 %
+   (`DEFAULT_REL_TOL = 0.005` dans `compute/metrics.py`, paramétrable).
+2. **Granularité du `locator`** : ✅ **résolu** — `locator` libre (page/section/
+   table/span) ; le cœur public valide la forme, la résolution réelle est enterprise.
+3. **Schéma `lane_fields` MIF II** : ⏳ **ouvert** — périmètre minimal viable de la
+   déclaration d'adéquation, à valider avec la conformité.
+4. **Format de persistance du RR** : ✅ **résolu** — JSON plat (cf.
+   `harness/schema/recommendation_record.schema.json` + export JSONL).

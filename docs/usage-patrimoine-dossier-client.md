@@ -106,10 +106,10 @@ corriger (ou quel document re-sourcer) avant de re-soumettre.
    gate G-6 — voir `harness/fixtures/cases_worked.py` pour la lane personnelle).
 3. Lancez `gates.evaluate(rr)` et lisez le verdict + les raisons par gate.
 
-> **Rappel de périmètre.** Brancher une vraie source (EDGAR, Euronext, un
-> fournisseur de données) ou un vrai modèle reste **interdit** tant qu'un GO de
-> phase distinct n'est pas donné (voir la liste « Périmètre encore verrouillé »
-> du `README.md`). Ce guide est purement local et synthétique.
+> **Rappel de périmètre.** Brancher une vraie source de données (EDGAR, Euronext, un
+> fournisseur) ou un connecteur réel est **hors-périmètre de ce dépôt public** : cela
+> relève de l'édition enterprise privée (voir [`OPEN-CORE.md`](../OPEN-CORE.md)). Ce
+> guide est purement local et synthétique.
 
 ## Vérifier que le cas tient
 

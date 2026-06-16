@@ -66,15 +66,16 @@ keep it private (you can always open more later; you can never un-publish git hi
   only hard guarantee — git history is permanent.
 - `.gitignore` is deny-by-default for `corpora/`, `data/`, `runs/`, `enterprise/`,
   `connectors/real/`, `*.env`, secrets, and provider artifacts.
-- (Opening phase, not P1) a pre-commit / CI check will refuse commits touching
-  excluded paths or matching secret patterns. It only makes sense once the repo is
-  git-initialized and pushed; P1 stays local with no git. Described now; added at
-  repository opening.
+- A hygiene gate (`tools/check_public_hygiene.sh`) refuses any commit touching
+  excluded paths, matching secret patterns, or carrying internal infra traces. It
+  runs both as a local pre-commit hook (`.githooks/pre-commit`) and in CI on every
+  push (`.github/workflows/ci.yml`).
 
 ## Status
 
-Executable framework (P1–P3) + the `Connector` seam (E1) shipped: schema, gates
-G-1..G-6, deterministic compute, public source pointers/loaders, mock candidates,
-and `harness/connectors/` (Protocols + `MockConnector` + as-first-reported /
-point-in-time utilities). Real connectors remain private. This document is the
+The executable framework is shipped and public: the RR schema, gates G-1..G-6,
+deterministic compute, public source pointers/loaders, model-agnostic mock
+candidates, batch reporting, RR export, and the `harness/connectors/` seam
+(Protocols + `MockConnector` + as-first-reported / point-in-time utilities). Real
+connectors and real data remain in the private enterprise repo. This document is the
 binding boundary for everything that follows.

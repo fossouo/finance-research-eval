@@ -61,8 +61,8 @@ a `CHANGELOG.md` entry, and a version bump per `GOVERNANCE.md`.
 - One focused change per PR.
 - Commits signed off (`-s`).
 - Docs updated when behavior/standard changes.
-- (From P1 onward) tests pass and no excluded path is touched. Synthetic fixtures
-  only — never add real data to make a test pass.
+- Tests pass (`python3 -m unittest discover -s tests -t .`) and no excluded path is
+  touched. Synthetic fixtures only — never add real data to make a test pass.
 
 ## A note on the subject matter
 
@@ -73,5 +73,9 @@ of this framework as regulated financial advice. See `SECURITY.md` and
 
 ## Status
 
-The project is in **Phase 0 (design-only)**. Until P1 opens, contributions are
-limited to the specification and documentation.
+The core framework is **shipped and public**: Recommendation Record, gates
+G-1..G-6, deterministic recompute, public source loaders (pointers), model-agnostic
+candidates, batch reporting, and RR export — all pure stdlib, with a green test
+suite. Contributions are welcome (code, tests, fixtures, docs) within the scope
+defined in [`OPEN-CORE.md`](OPEN-CORE.md). Real data, live connectors, and
+proprietary scoring belong to the separate private enterprise edition.

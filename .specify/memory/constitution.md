@@ -1,7 +1,7 @@
 # Constitution — finance-research-eval
 
-> Document directeur. Toute spec, tout futur composant doit s'y conformer.
-> Statut : **Phase 0, design-only.** Aucun engagement d'exécution.
+> Document directeur. Toute spec, tout composant du dépôt doit s'y conformer.
+> Statut : **cadre actif** — le harnais de recevabilité est implémenté et public.
 
 ## Question centrale (le point de départ, validé)
 
@@ -71,4 +71,6 @@ Recevabilité (gates) ─► Exactitude (vs gold) ─► Utilité (thèse)
   d'ingénierie_ ; il doit être validé par la conformité / un juriste avant tout
   usage réel relevant de MiFID II (Directive 2014/65/UE) ou du règlement AMF.
 - **Pas un conseil en investissement.** Ce dépôt décrit une méthode de mesure.
-- **Design-only.** Aucun principe ci-dessus n'autorise une exécution sans GO.
+- **Périmètre public.** Ces principes gouvernent le dépôt public (mesure + interfaces
+  + fixtures synthétiques) ; la donnée réelle et les connecteurs vivent dans l'édition
+  enterprise privée.

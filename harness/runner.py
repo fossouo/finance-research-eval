@@ -48,7 +48,7 @@ def run(cases=None):
 def format_text(report) -> str:
     mark = {"PASS": "ok ", "FAIL": "XX ", "NA": " - "}
     lines = [
-        "finance-research-eval — P1 dry harness — local report",
+        "finance-research-eval — recevability harness — local report",
         "(synthetic data only — no model, no network, no real data)",
         "=" * 64,
     ]

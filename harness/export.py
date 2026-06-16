@@ -1,7 +1,7 @@
-"""P5 — Recommendation Record exporter.
+"""Recommendation Record exporter.
 
 Exports individual Recommendation Records (RRs) into durable, portable
-artifacts that are distinct from the P4 batch-stats report:
+artifacts that are distinct from the batch-stats report (``report.py``):
 
   * ``export_jsonl(rrs, path)``   — JSON Lines bundle: one RR per line, each
     stamped with its evaluation verdict + gate results.
@@ -9,7 +9,7 @@ artifacts that are distinct from the P4 batch-stats report:
     verdict, cutoff, input_hash) suitable for serialisation as index.json.
   * ``format_thesis_card(rr)``    — Markdown "thesis card" for a single RR:
     the analyst-facing document showing provenance, claims, computations, gate
-    verdicts, and citations in a layout MARBO can paste into a review note.
+    verdicts, and citations in a layout an analyst can paste into a review note.
   * ``export_bundle(rrs, out_dir)`` — writes everything: index.json,
     <rr-id>.jsonl, and <rr-id>-card.md for every RR in the list.
 

@@ -1,8 +1,9 @@
 # Gates d'évaluation — jour 0 (G-1 .. G-6)
 
-> **Design-only.** Spécifie les gates ; aucun n'est implémenté en Phase 0.
-> Tous sont **déterministes** et **indépendants du LLM** (P-1, P-3). Ils sont
-> appliqués à un *Recommendation Record* (RR, cf. spec §4).
+> Définition normative des gates. L'implémentation canonique est
+> [`harness/gates/gates.py`](../../../harness/gates/gates.py). Tous sont
+> **déterministes** et **indépendants du LLM** (P-1, P-3). Ils sont appliqués à un
+> *Recommendation Record* (RR, cf. spec §4).
 
 ## Vue d'ensemble
 
@@ -29,9 +30,10 @@ d'un `source_doc` réel) et qui porte un `as_of`.
 **PASS.** Chaque affirmation chiffrée a au moins un localisateur résolvable + `as_of`.
 **FAIL.** Au moins un chiffre sans source / avec localisateur non résolvable.
 
-**Mesure (design).** Le moteur vérifie l'existence et la cohérence formelle du
+**Mesure.** Le moteur vérifie l'existence et la cohérence formelle du
 localisateur (structure + correspondance au document déclaré). _La résolution
-réelle contre un document n'a lieu qu'en phase données (P2+), jamais en P0._
+réelle contre un document nécessite l'ingestion de données réelles (édition
+enterprise) ; le cœur public valide la forme._
 
 **Rationale.** Un chiffre non sourçable = hallucination potentielle. C'est le
 risque n°1 (le LLM invente un EPS, on achète sur du vent). → P-2.
@@ -71,8 +73,8 @@ ne peut **pas** reproduire à partir des inputs déclarés.
 dans `evidence[]`) et compare. Le LLM **ne valide jamais son propre nombre** — c'est
 le cœur du gate. Analogue direct d'un vérificateur déterministe (séparation juge/jugé).
 
-**Tolérance.** Question ouverte (spec §10) : bande relative paramétrable (ex.
-±0,5 %) pour absorber les arrondis de présentation. À figer en P1.
+**Tolérance.** Bande relative **±0,5 %** par défaut (`DEFAULT_REL_TOL = 0.005` dans
+`compute/metrics.py`, paramétrable), pour absorber les arrondis de présentation.
 
 **Rationale.** Le LLM **raisonne**, il ne **calcule pas** le verdict. → P-1, P-3.
 
@@ -95,9 +97,9 @@ inadmissible.
 savait à la date de coupure. Sans cela, tout futur backtest est biaisé (look-ahead)
 et toute « performance » affichée est fictive. → P-4.
 
-**Note.** En P0–P1 (sans données), G-4 vérifie la **présence et la cohérence
+**Note.** En l'absence de données réelles, G-4 vérifie la **présence et la cohérence
 formelle** des dates. La vérification contre des sources réelles arrive avec
-l'ingestion point-in-time (P5).
+l'ingestion point-in-time (édition enterprise).
 
 ---
 
@@ -114,7 +116,7 @@ l'ingestion point-in-time (P5).
 n'existe pas. C'est la traduction opérationnelle de l'exigence d'adéquation /
 présentation objective. → P-6, FR-007.
 
-> Ce gate ne s'applique pas à Lane A (perso), où le founder reste seul juge — mais
+> Ce gate ne s'applique pas à Lane A (perso), où l'utilisateur reste seul juge — mais
 > G-1/G-3 y restent **signalés**.
 
 ---
@@ -148,4 +150,5 @@ Un candidat **exact mais peu recevable** (devine juste, ne sait pas le justifier
 est **mauvais** pour cet usage. Le rôle du harnais est précisément de **rendre ce
 défaut mesurable**, là où un score d'exactitude seul le masquerait.
 
-> Aucun gate n'est exécuté en Phase 0. Ce fichier en fige la **définition**.
+> Ce fichier est la **référence normative** des gates ; l'implémentation exécutable
+> est dans [`harness/gates/gates.py`](../../../harness/gates/gates.py).

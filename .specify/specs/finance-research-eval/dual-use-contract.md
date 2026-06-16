@@ -1,9 +1,9 @@
 # Contrat dual-use — personal-research / client-mifid
 
-> **Design-only.** Définit deux lanes et leur cloisonnement. Le volet `client-mifid`
-> est une **proposition d'ingénierie** : il doit être **validé par la conformité /
-> un juriste** avant tout usage réel. **Ni conseil en investissement, ni conseil
-> juridique.**
+> Définit deux lanes et leur cloisonnement (implémenté : G-6 + `lane_fields`). Le volet
+> `client-mifid` est une **proposition d'ingénierie** : il doit être **validé par la
+> conformité / un juriste** avant tout usage réel. **Ni conseil en investissement, ni
+> conseil juridique.**
 
 ## Principe (P-6)
 
@@ -34,11 +34,11 @@ Un seul moteur, **deux lanes jamais mélangées**. Le cloisonnement se fait par
 
 | | |
 |---|---|
-| **Usage** | Analyse pour le **capital propre** du founder (PEA / CTO). |
+| **Usage** | Analyse pour le **capital propre** de l'utilisateur (PEA / CTO). |
 | **Cadre** | Hors champ du conseil réglementé (on n'analyse pas pour autrui). |
 | **Champs requis** | RR standard (claims sourcées + computations recalculées + cutoff). |
 | **Gates appliqués** | G-1..G-4, G-6 (déclaration de lane). |
-| **Sévérité** | Un RR non recevable est **signalé** ; le founder reste seul juge et seul responsable de sa décision. |
+| **Sévérité** | Un RR non recevable est **signalé** ; l'utilisateur reste seul juge et seul responsable de sa décision. |
 | **Sortie** | Thèse + dossier sourcé. **Jamais un ordre** (P-7). |
 
 > Lane A reste soumise à P-1..P-5 : même en usage perso, on ne tolère pas un chiffre
@@ -75,7 +75,7 @@ Distinguer d'abord la nature de la sortie :
 > Le RR `client-mifid` doit porter un champ `reco_nature` ∈
 > {`personalised-advice`, `general-research`} qui sélectionne le sous-ensemble de
 > champs obligatoires. Le périmètre minimal viable est une **question ouverte**
-> (cf. spec §10) à trancher avec la conformité.
+> (cf. `spec.md` §10) à trancher avec la conformité.
 
 ### Champ commun obligatoire (toute Lane B)
 
@@ -99,4 +99,4 @@ Distinguer d'abord la nature de la sortie :
 - ❌ Promouvoir du perso en client sans re-validation (P-6).
 - ❌ Passer un ordre, mouvementer des fonds (P-7).
 - ❌ Présenter une sortie comme « conseil » sans l'étiquetage et les champs requis.
-- ❌ Toute exécution en Phase 0 (design-only).
+- ❌ Tout usage avec des données client réelles sans la re-validation humaine décrite ci-dessus.

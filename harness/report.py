@@ -1,10 +1,10 @@
-"""P4 batch runner + human-readable report generator.
+"""Batch runner + human-readable report generator.
 
 Runs one or more candidates over one or more EvalItem sets (across lanes) and
 produces:
   - an aggregated ``BatchReport`` dict (the authoritative, machine-readable form)
   - a Markdown summary (``format_markdown``) — tables, per-gate pass rates, key
-    findings — suitable for a MARBO review session or a GitHub README section
+    findings — suitable for an analyst review note or a GitHub README section
   - a flat CSV export (``format_csv``) — one row per (candidate, lane, item)
 
 Design principles (mirrors the harness):

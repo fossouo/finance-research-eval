@@ -1,7 +1,7 @@
 """A fully worked synthetic end-to-end case: FICTEX SA.
 
 This module is a *reference case* — a single coherent company story that
-exercises every stage of the MARBO harness pipeline:
+exercises every stage of the harness pipeline:
 
     extraction → valuation (deterministic recompute) → gates G-1..G-6
     → RR.stamp_audit_trail → export (export_bundle + format_thesis_card)
