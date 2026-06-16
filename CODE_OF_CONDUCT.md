@@ -30,7 +30,7 @@ inappropriate in a professional setting.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be reported
-to the project maintainers at **fossouodonald@gmail.com**. All complaints will be reviewed and
+to the project maintainers at **contact@marbo-finance.fr**. All complaints will be reviewed and
 investigated promptly and fairly.
 
 This Code of Conduct is adapted from the Contributor Covenant v2.1, available at the

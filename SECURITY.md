@@ -6,7 +6,7 @@ If you discover a security issue (e.g., a way the framework could leak secrets, 
 flaw in a gate that lets unsourced numbers pass, or a path-exclusion bypass), please
 report it **privately** rather than opening a public issue.
 
-- Contact: **fossouodonald@gmail.com**.
+- Contact: **contact@marbo-finance.fr**.
 - Please include: a description, reproduction steps, and the potential impact.
 - We aim to acknowledge within a reasonable delay and to coordinate disclosure.
 
