@@ -250,7 +250,8 @@ def main(argv=None):
             summary["first_errors"] = errors[:5]
 
     print(json.dumps(summary, indent=2, ensure_ascii=False))
-    return 0
+    # Non-zero exit when --validate surfaces any invalid item, so CI smokes bite.
+    return 1 if (args.validate and errors) else 0
 
 
 if __name__ == "__main__":

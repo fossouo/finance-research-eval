@@ -1,0 +1,36 @@
+name: Nightly gate-regression
+
+# Pure-CPU, stdlib-only drift guard. No network, no secrets, no real data.
+# Catches any silent drift in the deterministic gate evaluation (e.g. a Python
+# minor-version behaviour change, an accidental fixture edit) against the
+# committed baseline at tests/fixtures/gate_regression_baseline.json.
+
+on:
+  schedule:
+    - cron: "0 3 * * *" # 03:00 UTC daily
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gate-regression:
+    name: Gate regression (synthetic-only, stdlib)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Drift check — synthetic-only subset (nightly signal)
+        run: python tools/gate_regression.py --synthetic-only
+
+      - name: Drift check — full fixture corpus
+        run: python tools/gate_regression.py
+
+      - name: Synthetic corpus generator smoke (deterministic, validated)
+        run: python -m harness.sources.synthetic_corpus --n 50 --validate
+
+      - name: Test suite (stdlib, no deps)
+        run: python -m unittest discover -s tests -t .
