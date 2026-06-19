@@ -1,0 +1,204 @@
+{
+  "corpus_size": 10,
+  "synthetic_only": false,
+  "verdict_distribution": {
+    "ADMISSIBLE": 4,
+    "BLOCKED": 6
+  },
+  "expected_verdict_matches": 10,
+  "expected_verdict_total": 10,
+  "per_gate_counts": {
+    "G-1": {
+      "FAIL": 2,
+      "NA": 0,
+      "PASS": 8
+    },
+    "G-2": {
+      "FAIL": 1,
+      "NA": 0,
+      "PASS": 9
+    },
+    "G-3": {
+      "FAIL": 2,
+      "NA": 0,
+      "PASS": 8
+    },
+    "G-4": {
+      "FAIL": 1,
+      "NA": 0,
+      "PASS": 9
+    },
+    "G-5": {
+      "FAIL": 2,
+      "NA": 5,
+      "PASS": 3
+    },
+    "G-6": {
+      "FAIL": 2,
+      "NA": 0,
+      "PASS": 8
+    }
+  },
+  "records": [
+    {
+      "name": "admissible_client",
+      "rr_id": "rr-002-admissible-client",
+      "lane": "client-mifid",
+      "verdict": "ADMISSIBLE",
+      "expected_verdict": "ADMISSIBLE",
+      "verdict_match": true,
+      "gate_statuses": {
+        "G-1": "PASS",
+        "G-2": "PASS",
+        "G-3": "PASS",
+        "G-4": "PASS",
+        "G-5": "PASS",
+        "G-6": "PASS"
+      }
+    },
+    {
+      "name": "admissible_personal",
+      "rr_id": "rr-001-admissible-personal",
+      "lane": "personal-research",
+      "verdict": "ADMISSIBLE",
+      "expected_verdict": "ADMISSIBLE",
+      "verdict_match": true,
+      "gate_statuses": {
+        "G-1": "PASS",
+        "G-2": "PASS",
+        "G-3": "PASS",
+        "G-4": "PASS",
+        "G-5": "NA",
+        "G-6": "PASS"
+      }
+    },
+    {
+      "name": "g1_flag_personal",
+      "rr_id": "rr-003-g1-flag-personal",
+      "lane": "personal-research",
+      "verdict": "ADMISSIBLE",
+      "expected_verdict": "ADMISSIBLE",
+      "verdict_match": true,
+      "gate_statuses": {
+        "G-1": "FAIL",
+        "G-2": "PASS",
+        "G-3": "PASS",
+        "G-4": "PASS",
+        "G-5": "NA",
+        "G-6": "PASS"
+      }
+    },
+    {
+      "name": "g2_tampered_personal",
+      "rr_id": "rr-005-g2-tampered-personal",
+      "lane": "personal-research",
+      "verdict": "BLOCKED",
+      "expected_verdict": "BLOCKED",
+      "verdict_match": true,
+      "gate_statuses": {
+        "G-1": "PASS",
+        "G-2": "FAIL",
+        "G-3": "PASS",
+        "G-4": "PASS",
+        "G-5": "NA",
+        "G-6": "PASS"
+      }
+    },
+    {
+      "name": "g3_block_client",
+      "rr_id": "rr-007-g3-block-client",
+      "lane": "client-mifid",
+      "verdict": "BLOCKED",
+      "expected_verdict": "BLOCKED",
+      "verdict_match": true,
+      "gate_statuses": {
+        "G-1": "PASS",
+        "G-2": "PASS",
+        "G-3": "FAIL",
+        "G-4": "PASS",
+        "G-5": "FAIL",
+        "G-6": "PASS"
+      }
+    },
+    {
+      "name": "g3_flag_personal",
+      "rr_id": "rr-006-g3-flag-personal",
+      "lane": "personal-research",
+      "verdict": "ADMISSIBLE",
+      "expected_verdict": "ADMISSIBLE",
+      "verdict_match": true,
+      "gate_statuses": {
+        "G-1": "PASS",
+        "G-2": "PASS",
+        "G-3": "FAIL",
+        "G-4": "PASS",
+        "G-5": "NA",
+        "G-6": "PASS"
+      }
+    },
+    {
+      "name": "g4_lookahead_personal",
+      "rr_id": "rr-008-g4-lookahead-personal",
+      "lane": "personal-research",
+      "verdict": "BLOCKED",
+      "expected_verdict": "BLOCKED",
+      "verdict_match": true,
+      "gate_statuses": {
+        "G-1": "PASS",
+        "G-2": "PASS",
+        "G-3": "PASS",
+        "G-4": "FAIL",
+        "G-5": "NA",
+        "G-6": "PASS"
+      }
+    },
+    {
+      "name": "g5_block_client_unsourced",
+      "rr_id": "rr-004-g5-block-client",
+      "lane": "client-mifid",
+      "verdict": "BLOCKED",
+      "expected_verdict": "BLOCKED",
+      "verdict_match": true,
+      "gate_statuses": {
+        "G-1": "FAIL",
+        "G-2": "PASS",
+        "G-3": "PASS",
+        "G-4": "PASS",
+        "G-5": "FAIL",
+        "G-6": "PASS"
+      }
+    },
+    {
+      "name": "g6_missing_lanefields_client",
+      "rr_id": "rr-009-g6-missing-lanefields-client",
+      "lane": "client-mifid",
+      "verdict": "BLOCKED",
+      "expected_verdict": "BLOCKED",
+      "verdict_match": true,
+      "gate_statuses": {
+        "G-1": "PASS",
+        "G-2": "PASS",
+        "G-3": "PASS",
+        "G-4": "PASS",
+        "G-5": "PASS",
+        "G-6": "FAIL"
+      }
+    },
+    {
+      "name": "g6_promotion_client",
+      "rr_id": "rr-010-g6-promotion-client",
+      "lane": "client-mifid",
+      "verdict": "BLOCKED",
+      "expected_verdict": "BLOCKED",
+      "verdict_match": true,
+      "gate_statuses": {
+        "G-1": "PASS",
+        "G-2": "PASS",
+        "G-3": "PASS",
+        "G-4": "PASS",
+        "G-5": "PASS",
+        "G-6": "FAIL"
+      }
+    }
+  ]
+}
