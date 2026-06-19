@@ -1,0 +1,72 @@
+[
+  {
+    "_synthetic": true,
+    "id": "synthetic-convfinqa-0001",
+    "pre_text": [
+      "ACME SA reported revenue of 1200 MEUR and EBITDA of 300 MEUR for FY2024 (synthetic).",
+      "The enterprise value was estimated at 2400 MEUR."
+    ],
+    "post_text": [
+      "These figures are used to compute standard valuation multiples."
+    ],
+    "table": [
+      ["metric", "FY2024"],
+      ["Revenue (MEUR)", "1200"],
+      ["EBITDA (MEUR)", "300"],
+      ["Enterprise value (MEUR)", "2400"]
+    ],
+    "annotation": {
+      "dialogue_break": [
+        "What was ACME SA's revenue in FY2024?",
+        "And what was the EBITDA for the same year?",
+        "Given those, what is the EV/EBITDA multiple?"
+      ],
+      "exe_ans_list": ["1200.0", "300.0", "8.0"],
+      "answer": "8.0"
+    }
+  },
+  {
+    "_synthetic": true,
+    "id": "synthetic-convfinqa-0002",
+    "pre_text": [
+      "BETA Corp's net debt stood at 600 MEUR and EBITDA at 300 MEUR for FY2024 (synthetic)."
+    ],
+    "post_text": [
+      "Net debt to EBITDA is a key leverage metric."
+    ],
+    "table": [
+      ["metric", "FY2024"],
+      ["Net debt (MEUR)", "600"],
+      ["EBITDA (MEUR)", "300"]
+    ],
+    "annotation": {
+      "dialogue_break": [
+        "What is BETA Corp's net debt?",
+        "What is the net debt to EBITDA ratio?"
+      ],
+      "exe_ans_list": ["600.0", "2.0"],
+      "answer": "2.0"
+    }
+  },
+  {
+    "_synthetic": true,
+    "id": "synthetic-convfinqa-0003",
+    "pre_text": [
+      "GAMMA Inc posted gross profit of 480 MEUR on revenue of 1200 MEUR in FY2024 (synthetic)."
+    ],
+    "post_text": [],
+    "table": [
+      ["metric", "FY2024"],
+      ["Revenue (MEUR)", "1200"],
+      ["Gross profit (MEUR)", "480"]
+    ],
+    "annotation": {
+      "questions": [
+        "What is GAMMA Inc's gross profit?",
+        "What is the gross margin percentage?"
+      ],
+      "exe_ans_list": ["480.0", "0.4"],
+      "answer": "0.4"
+    }
+  }
+]

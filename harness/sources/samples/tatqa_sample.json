@@ -1,0 +1,78 @@
+[
+  {
+    "_synthetic": true,
+    "uid": "synthetic-tatqa-0001",
+    "table": {
+      "uid": "synthetic-tatqa-0001-tbl",
+      "table": [
+        ["Metric", "FY2023", "FY2024"],
+        ["Revenue (MEUR)", "1000", "1200"],
+        ["Gross profit (MEUR)", "380", "480"],
+        ["EBITDA (MEUR)", "250", "300"]
+      ]
+    },
+    "paragraphs": [
+      {
+        "uid": "synthetic-tatqa-0001-p1",
+        "text": "ACME SA achieved strong growth in FY2024, with revenue rising 20% to 1200 MEUR (synthetic)."
+      },
+      {
+        "uid": "synthetic-tatqa-0001-p2",
+        "text": "Gross margin improved to 40% as cost controls took effect."
+      }
+    ],
+    "questions": [
+      {
+        "uid": "synthetic-tatqa-0001-q1",
+        "question": "What was ACME SA's revenue in FY2024?",
+        "answer": ["1200"],
+        "answer_type": "span",
+        "scale": "million"
+      },
+      {
+        "uid": "synthetic-tatqa-0001-q2",
+        "question": "What is the revenue growth rate from FY2023 to FY2024?",
+        "answer": ["0.2"],
+        "answer_type": "arithmetic",
+        "scale": ""
+      },
+      {
+        "uid": "synthetic-tatqa-0001-q3",
+        "question": "What was the gross profit in FY2024?",
+        "answer": ["480"],
+        "answer_type": "span",
+        "scale": "million"
+      }
+    ]
+  },
+  {
+    "_synthetic": true,
+    "uid": "synthetic-tatqa-0002",
+    "table": [
+      ["Item", "Amount (MEUR)"],
+      ["Net debt", "600"],
+      ["EBITDA", "300"],
+      ["Market cap", "1800"]
+    ],
+    "paragraphs": [
+      "BETA Corp's balance sheet shows net debt of 600 MEUR against EBITDA of 300 MEUR for FY2024 (synthetic).",
+      "The market capitalisation stood at 1800 MEUR at year-end."
+    ],
+    "questions": [
+      {
+        "uid": "synthetic-tatqa-0002-q1",
+        "question": "What is BETA Corp's net debt to EBITDA ratio?",
+        "answer": ["2.0"],
+        "answer_type": "arithmetic",
+        "scale": ""
+      },
+      {
+        "uid": "synthetic-tatqa-0002-q2",
+        "question": "What is the free cash flow yield if FCF is 90 MEUR?",
+        "answer": ["0.05"],
+        "answer_type": "arithmetic",
+        "scale": ""
+      }
+    ]
+  }
+]
