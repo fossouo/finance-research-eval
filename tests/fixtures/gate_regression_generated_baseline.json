@@ -1,0 +1,165 @@
+{
+  "mode": "generated",
+  "n": 60,
+  "seed": 0,
+  "runs": {
+    "faithful-mock/client-mifid": {
+      "total": 60,
+      "admissible": 60,
+      "blocked": 0,
+      "correct": 60,
+      "errors": 0
+    },
+    "faithful-mock/personal-research": {
+      "total": 60,
+      "admissible": 60,
+      "blocked": 0,
+      "correct": 60,
+      "errors": 0
+    },
+    "sloppy-mock/client-mifid": {
+      "total": 60,
+      "admissible": 20,
+      "blocked": 40,
+      "correct": 60,
+      "errors": 0
+    },
+    "sloppy-mock/personal-research": {
+      "total": 60,
+      "admissible": 60,
+      "blocked": 0,
+      "correct": 60,
+      "errors": 0
+    }
+  },
+  "per_gate_distribution": {
+    "faithful-mock/client-mifid": {
+      "G-1": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      },
+      "G-2": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      },
+      "G-3": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      },
+      "G-4": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      },
+      "G-5": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      },
+      "G-6": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      }
+    },
+    "faithful-mock/personal-research": {
+      "G-1": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      },
+      "G-2": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      },
+      "G-3": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      },
+      "G-4": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      },
+      "G-5": {
+        "FAIL": 0,
+        "NA": 60,
+        "PASS": 0
+      },
+      "G-6": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      }
+    },
+    "sloppy-mock/client-mifid": {
+      "G-1": {
+        "FAIL": 40,
+        "NA": 0,
+        "PASS": 20
+      },
+      "G-2": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      },
+      "G-3": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      },
+      "G-4": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      },
+      "G-5": {
+        "FAIL": 40,
+        "NA": 0,
+        "PASS": 20
+      },
+      "G-6": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      }
+    },
+    "sloppy-mock/personal-research": {
+      "G-1": {
+        "FAIL": 40,
+        "NA": 0,
+        "PASS": 20
+      },
+      "G-2": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      },
+      "G-3": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      },
+      "G-4": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      },
+      "G-5": {
+        "FAIL": 0,
+        "NA": 60,
+        "PASS": 0
+      },
+      "G-6": {
+        "FAIL": 0,
+        "NA": 0,
+        "PASS": 60
+      }
+    }
+  }
+}
