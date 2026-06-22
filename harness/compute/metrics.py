@@ -77,6 +77,26 @@ METRICS = {
         lambda o: o["peer_ev_ebitda"] * o["ebitda"],
         "peer_ev_ebitda * ebitda",
     ),
+    # --- allocation-recevability (variadic sums) ----------------------------
+    # Unlike the valuation ratios above (fixed operand pairs), these two metrics
+    # sum a *variable* number of operands so a CGP portfolio-allocation note with
+    # any number of fund lines can be verified. Each operand is still resolved
+    # from a sourced evidence id (G-3 maps inputs operand-name -> evidence id and
+    # passes the evidence value), exactly like every other metric — only the
+    # arity is open. The required-operand list is empty so recompute's
+    # missing-check is a no-op (needed == [] passes); the function sums whatever
+    # operands G-3 resolved. weights_sum_pct should equal 100 (allocation closes)
+    # and holdings_value_sum should reconcile to the note's encours.
+    "weights_sum_pct": (
+        [],
+        lambda o: sum(o.values()),
+        "sum(weights) (attendu 100)",
+    ),
+    "holdings_value_sum": (
+        [],
+        lambda o: sum(o.values()),
+        "sum(montants) (attendu = encours)",
+    ),
 }
 
 
