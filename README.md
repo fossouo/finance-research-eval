@@ -52,7 +52,7 @@ Voir [`harness/fixtures/cases_patrimoine.py`](harness/fixtures/cases_patrimoine.
 
 ```bash
 # Suite de conformité (le cœur : la table de gates verrouillée)
-python3 -m unittest discover -s tests -t .        # 163 tests, 0 réseau
+python3 -m unittest discover -s tests -t .        # 257 tests, 0 réseau
 
 # Rapport local sur fixtures synthétiques (RR → gates → verdict)
 python3 -m harness.runner
@@ -146,7 +146,9 @@ harness/
 ├── eval_run.py               EvalItem → candidat → RR → gates → rapport
 ├── report.py                 batch runner + rapport Markdown/CSV
 └── export.py                 exporteur RR (JSONL + manifest + thesis-card Markdown)
-tests/                        unittest stdlib (163 tests, 0 réseau)
+tools/investor_signals/       pont corpus décisions historiques → RR → gates (fixtures synthétiques publiques)
+docs/investor-signals-corpus.md  méthodologie + doctrine anti-fabrication du corpus investor-signals
+tests/                        unittest stdlib (257 tests, 0 réseau)
 .specify/specs/…              spec SDD, contrat dual-use, définition des gates
 ```
 
@@ -159,6 +161,8 @@ tests/                        unittest stdlib (163 tests, 0 réseau)
 | Loaders publics | benchmarks (FinanceBench/FinQA/…) + EDGAR en **pointeurs**, jamais de redistribution | ✅ public |
 | Candidat model-agnostic | mocks + endpoint OpenAI-compatible ; le modèle devient benchmarkable | ✅ public |
 | Batch + export | reporting agrégé Markdown/CSV + bundle RR + thesis-card | ✅ public |
+| Corpus investor-signals (pont) | décisions historiques → RR → gates (G-4 point-in-time = axe clé) ; adaptateur + fixtures **synthétiques** + méthodologie | ✅ public |
+| Corpus investor-signals (données réelles) | 64 décisions Berkshire+BlackRock sourcées, couche d'évaluation, adjudication founder | 🔒 privé, livré |
 | Enterprise | ingestion réelle, point-in-time, fournisseurs, conformité, backtest | 🔒 privé, planifié |
 
 > **Données — décision assumée :** on ne paie rien pour démarrer. Le cœur public s'appuie sur
